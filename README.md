@@ -1,4 +1,6 @@
 # Pigly's Player Head Drops
+<a href="https://modrinth.com/mod/piglys-player-head-drops"><img src="https://img.shields.io/badge/dynamic/json?color=158000&label=downloads&prefix=+%20&query=downloads&url=https://api.modrinth.com/v2/project/hvwKeVnz&logo=modrinth" alt="Modrinth Downloads"></a>
+
 When a player is killed by a player, they drop a head. 
 
 This head can be used by another player to make them invisible to the head's owner.
