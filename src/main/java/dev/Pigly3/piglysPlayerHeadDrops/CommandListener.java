@@ -23,18 +23,14 @@ public class CommandListener implements Listener {
         if (event.getMessage().toLowerCase().startsWith("/msg") || event.getMessage().toLowerCase().startsWith("/tell") || event.getMessage().toLowerCase().startsWith("/w")){
             String[] commandParts = event.getMessage().split(" ");
             UUID recipientUUID = Bukkit.getOfflinePlayer(commandParts[1]).getUniqueId();
-            plugin.getLogger().info(recipientUUID.toString());
             for (Player currPlayer : Bukkit.getOnlinePlayers()){
                 if (currPlayer.getName().equals(commandParts[1])){
                     if (currPlayer.getUniqueId() != recipientUUID){
                         commandParts[1] = MojangAPIAccess.uuidToUsername(currPlayer.getUniqueId());
                         event.setMessage(String.join(" ", commandParts));
-                        plugin.getLogger().info(event.getMessage());
                     }
                 }
             }
-        } else {
-            plugin.getLogger().info("9k111");
         }
     }
 }
