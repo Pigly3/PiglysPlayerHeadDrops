@@ -113,6 +113,7 @@ public class PlayerInteractListener implements Listener {
         PlayerProfile profile = player.getPlayerProfile();
         PlayerProfile returnProfile = (PlayerProfile) profile.clone();
         String playerName = player.getName();
+        plugin.getLogger().info(String.format("%s disguised as %s", playerName, owner.getName()));
         for (ProfileProperty property : owner.getProperties()) {
             if ("textures".equals(property.getName())) {
                 profile.setProperty(property);
