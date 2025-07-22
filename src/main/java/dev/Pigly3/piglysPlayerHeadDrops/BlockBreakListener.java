@@ -11,6 +11,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.block.TileState;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -28,7 +29,7 @@ public class BlockBreakListener implements Listener {
     public BlockBreakListener(Plugin plugin){
         this.plugin = plugin;
     }
-    @EventHandler
+    @EventHandler(priority= EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent event) throws NoSuchFieldException {
         if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)){
             return;
@@ -39,6 +40,8 @@ public class BlockBreakListener implements Listener {
         if (state instanceof Skull skull){
             NamespacedKey key = new NamespacedKey(plugin, "is_sterile_head");
             Boolean value = skull.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN);
+            NamespacedKey disguiseKey = new NamespacedKey(plugin, "is_disguise_head");
+            Boolean isShadow = skull.getPersistentDataContainer().get(disguiseKey, PersistentDataType.BOOLEAN);
             if (value != null && value){
                 ItemStack drop = new ItemStack(Material.PLAYER_HEAD);
                 PlayerProfile profile = skull.getPlayerProfile();
@@ -50,10 +53,7 @@ public class BlockBreakListener implements Listener {
                 meta.lore(List.of(Component.text("Decorative")));
                 drop.setItemMeta(meta);
                 block.getWorld().dropItem(block.getLocation().add(0.5, 0.5, 0.5), drop);
-
-            } else {
-                event.setDropItems(true);
-            }
+            } else event.setDropItems(isShadow == null || !isShadow);
         } else {
             event.setDropItems(true);
         }

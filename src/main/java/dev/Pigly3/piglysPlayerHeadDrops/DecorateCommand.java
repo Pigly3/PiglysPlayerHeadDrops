@@ -25,14 +25,20 @@ public class DecorateCommand implements BasicCommand {
     @Override
     public void execute(CommandSourceStack commandSourceStack, String[] args) {
         ItemStack item = ((Player) Objects.requireNonNull(commandSourceStack.getExecutor())).getInventory().getItemInMainHand();
-        if (item != null && item.getType() == Material.PLAYER_HEAD){
-            ItemMeta meta = item.getItemMeta();
+        ItemMeta meta = item.getItemMeta();
+        NamespacedKey shadowKey = new NamespacedKey(plugin, "is_disguise_head");
+        Boolean isShadow = meta.getPersistentDataContainer().get(shadowKey, PersistentDataType.BOOLEAN);
+        if (isShadow != null && isShadow){
+            commandSourceStack.getExecutor().sendMessage("Disguise heads cannot be made decorative.");
+            return;
+        }
+        if (item.getType() == Material.PLAYER_HEAD){
             NamespacedKey key = new NamespacedKey(plugin, "is_sterile_head");
             meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
             meta.lore(List.of(Component.text("Decorative")));
             item.setItemMeta(meta);
         } else {
-            ((Player) commandSourceStack.getExecutor()).sendMessage("This command can only be run on a head.");
+            commandSourceStack.getExecutor().sendMessage("This command can only be run on a head.");
         }
     }
 }

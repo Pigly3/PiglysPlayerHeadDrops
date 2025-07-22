@@ -1,0 +1,4 @@
+removeHeadOnUse: true
+headUseCooldown: 20 #cooldown in seconds after expiry
+headUseDuration: 60 #duration in seconds
+disguiseDuration: 300
