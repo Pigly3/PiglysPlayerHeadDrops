@@ -27,6 +27,7 @@ public class HeadCommand implements BasicCommand {
         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta playerHeadMeta = (SkullMeta) playerHead.getItemMeta();
         playerHeadMeta.setOwningPlayer(cause);
+        playerHead.setItemMeta(playerHeadMeta);
         assert cause != null;
         cause.give(playerHead);
     }
