@@ -11,7 +11,7 @@ Invisibility lasts for 1 minute or until the head's owner is hit by the player.
 
 Heads have a 20-second cooldown.
 
-[Javadoc](https://piglys-player-head-javadoc.replit.app/)
+[Javadoc](https://javadoc.replit.app/piglysplayerheaddrops/1.1.5/)
 
 ## Changes in 1.1.0
 - Config option for consuming the head on use
