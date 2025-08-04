@@ -11,7 +11,17 @@ Invisibility lasts for 1 minute or until the head's owner is hit by the player.
 
 Heads have a 20-second cooldown.
 
-[Javadoc](https://javadoc.replit.app/piglysplayerheaddrops/1.1.5/)
+[Javadoc](https://javadoc.replit.app/piglysplayerheaddrops/1.2.0/)
+
+## Changes 1.2.0
+- Lives system
+- Expanded config options
+- Config restructuring
+- Easy disable system
+- Revives
+- Extra lives (crafted with heads)
+- Fixed a problem with the NBTCraftingRecipe API that would prevent registering multiple recipes
+- Added an API to allow for extensions of the plugins
 
 ## Changes in 1.1.0
 - Config option for consuming the head on use

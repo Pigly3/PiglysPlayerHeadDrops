@@ -3,7 +3,6 @@ package dev.Pigly3.piglysPlayerHeadDrops;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.destroystokyo.paper.profile.ProfileProperty;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -21,8 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,14 +27,18 @@ public class PlayerInteractListener implements Listener {
     Plugin plugin;
     File file;
     YamlConfiguration config;
+    File livesFile;
+    APIManager api;
     public PlayerInteractListener(Plugin plugin){
         this.plugin = plugin;
         this.file = new File(plugin.getDataFolder(), "cooldowns.yml");
+        this.livesFile = new File(plugin.getDataFolder(), "lives.yml");
         File configFile = new File(plugin.getDataFolder(), "config.yml");
         config = YamlConfiguration.loadConfiguration(configFile);
+        api = new APIManager(plugin);
     }
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event){
+    public void onPlayerInteract(PlayerInteractEvent event) throws IOException {
         ItemStack item = event.getItem();
         if (item == null || item.getItemMeta() == null || !item.hasItemMeta()){
             return;
@@ -52,9 +53,19 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
             NamespacedKey key = new NamespacedKey(plugin, "is_disguise_head");
-            if (Boolean.TRUE.equals(item.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN))){
-                plugin.getLogger().info("used disguise head");
+            if (Boolean.TRUE.equals(item.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN)) && plugin.getConfig().getBoolean("disguise.enabled")) {
                 this.disguiseHeadInteract(event, headOwner);
+                return;
+            }
+            key = new NamespacedKey(plugin, "is_revive_head");
+            if (Boolean.TRUE.equals(item.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN))){
+                this.revivePlayer(event, headOwner);
+            }
+            key = new NamespacedKey(plugin, "is_life_head");
+            if (Boolean.TRUE.equals(item.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN))){
+                this.addExtraLife(event, headOwner);
+            }
+            if (!plugin.getConfig().getBoolean("headUse.enabled")){
                 return;
             }
             Player owner = Bukkit.getPlayer(headOwner.getName());
@@ -72,7 +83,7 @@ public class PlayerInteractListener implements Listener {
                     return;
                 }
                 owner.hidePlayer(plugin, event.getPlayer());
-                if (config.getBoolean("removeHeadOnUse")){
+                if (config.getBoolean("headUse.removeHead")){
                     item.setAmount(item.getAmount() - 1);
                 }
                 event.setCancelled(true);
@@ -97,14 +108,14 @@ public class PlayerInteractListener implements Listener {
                     if (!owner.canSee(event.getPlayer())){
                         owner.showPlayer(plugin, event.getPlayer());
                         event.getPlayer().sendActionBar(Component.text(String.format("%s can now see you", headOwner.getName())));
-                        cooldowns.set("players." + event.getPlayer().getName(), Instant.now().plusSeconds(config.getInt("headUseCooldown")).toString());
+                        cooldowns.set("players." + event.getPlayer().getName(), Instant.now().plusSeconds(config.getInt("headUse.cooldown")).toString());
                         try {
                             cooldowns.save(file);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                }, 20L * config.getInt("headUseDuration"));
+                }, 20L * config.getInt("headUse.duration"));
             }
         }
     }
@@ -113,7 +124,6 @@ public class PlayerInteractListener implements Listener {
         PlayerProfile profile = player.getPlayerProfile();
         PlayerProfile returnProfile = (PlayerProfile) profile.clone();
         String playerName = player.getName();
-        plugin.getLogger().info(String.format("%s disguised as %s", playerName, owner.getName()));
         for (ProfileProperty property : owner.getProperties()) {
             if ("textures".equals(property.getName())) {
                 profile.setProperty(property);
@@ -146,6 +156,25 @@ public class PlayerInteractListener implements Listener {
                     p.showPlayer(plugin, player);
                 });
             }
-        }, 20L * config.getInt("disguiseDuration"));
+        }, 20L * config.getInt("disguise.duration"));
+    }
+    public void revivePlayer(PlayerInteractEvent event, PlayerProfile owner) throws IOException {
+        YamlConfiguration lives = YamlConfiguration.loadConfiguration(livesFile);
+        if (!plugin.getConfig().getBoolean("lifeSystem.revives.enabled")) return;
+        if (lives.getInt("lives." + owner.getName()) == 0){
+            api.revive(event.getPlayer().getName());
+        } else {
+            event.getPlayer().sendActionBar(Component.text(String.format("§4%s is not dead.", owner.getName())));
+        }
+    }
+
+    public void addExtraLife(PlayerInteractEvent event, PlayerProfile owner) throws IOException {
+        YamlConfiguration lives = YamlConfiguration.loadConfiguration(livesFile);
+        if (!plugin.getConfig().getBoolean("lifeSystem.extraLives.enabled")) return;
+        if (lives.getInt("lives." + event.getPlayer().getName()) != plugin.getConfig().getInt("lifeSystem.maxLives") && !(lives.get("lives." + event.getPlayer().getName()) == null)){
+            api.addLife(event.getPlayer().getName());
+        } else {
+            event.getPlayer().sendActionBar(Component.text("§4You have the maximum number of lives."));
+        }
     }
 }

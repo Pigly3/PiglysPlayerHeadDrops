@@ -40,7 +40,7 @@ public class NBTCraftingRecipe implements Listener {
 
     }
     public void register(){
-        NamespacedKey key = new NamespacedKey(plugin, "WarriorSword");
+        NamespacedKey key = new NamespacedKey(plugin, pluginSpecificID);
         ItemStack item = ItemStack.of(Material.DIRT);
         ShapedRecipe recipe = new ShapedRecipe(key, item);
 

@@ -17,6 +17,8 @@ public class CustomCraftingRecipes {
     public static ItemStack resolveDisguiseHead(Plugin plugin, ItemStack[] items){
         NamespacedKey disguiseKey = new NamespacedKey(plugin, "is_disguise_head");
         NamespacedKey sterileKey = new NamespacedKey(plugin, "is_sterile_head");
+        NamespacedKey reviveKey = new NamespacedKey(plugin, "is_revive_head");
+        NamespacedKey lifeKey = new NamespacedKey(plugin, "is_life_head");
         SkullMeta inputMeta = (SkullMeta) items[4].getItemMeta();
         ItemStack result = ItemStack.of(Material.PLAYER_HEAD);
         PlayerProfile profile = inputMeta.getPlayerProfile();
@@ -26,8 +28,52 @@ public class CustomCraftingRecipes {
         ItemMeta meta = result.getItemMeta();
         if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(disguiseKey, PersistentDataType.BOOLEAN))) return null;
         if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(sterileKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(reviveKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(lifeKey, PersistentDataType.BOOLEAN))) return null;
         meta.getPersistentDataContainer().set(disguiseKey, PersistentDataType.BOOLEAN, true);
         meta.lore(List.of(Component.text("Disguise")));
+        result.setItemMeta(meta);
+        return result;
+    }
+    public static ItemStack resolveReviveHead(Plugin plugin, ItemStack[] items){
+        NamespacedKey disguiseKey = new NamespacedKey(plugin, "is_disguise_head");
+        NamespacedKey sterileKey = new NamespacedKey(plugin, "is_sterile_head");
+        NamespacedKey reviveKey = new NamespacedKey(plugin, "is_revive_head");
+        NamespacedKey lifeKey = new NamespacedKey(plugin, "is_life_head");
+        SkullMeta inputMeta = (SkullMeta) items[4].getItemMeta();
+        ItemStack result = ItemStack.of(Material.PLAYER_HEAD);
+        PlayerProfile profile = inputMeta.getPlayerProfile();
+        SkullMeta resultMeta = (SkullMeta) result.getItemMeta();
+        resultMeta.setPlayerProfile(profile);
+        result.setItemMeta(resultMeta);
+        ItemMeta meta = result.getItemMeta();
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(disguiseKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(sterileKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(reviveKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(lifeKey, PersistentDataType.BOOLEAN))) return null;
+        meta.getPersistentDataContainer().set(reviveKey, PersistentDataType.BOOLEAN, true);
+        meta.lore(List.of(Component.text("Revive")));
+        result.setItemMeta(meta);
+        return result;
+    }
+    public static ItemStack resolveLifeHead(Plugin plugin, ItemStack[] items){
+        NamespacedKey disguiseKey = new NamespacedKey(plugin, "is_disguise_head");
+        NamespacedKey sterileKey = new NamespacedKey(plugin, "is_sterile_head");
+        NamespacedKey reviveKey = new NamespacedKey(plugin, "is_revive_head");
+        NamespacedKey lifeKey = new NamespacedKey(plugin, "is_life_head");
+        SkullMeta inputMeta = (SkullMeta) items[4].getItemMeta();
+        ItemStack result = ItemStack.of(Material.PLAYER_HEAD);
+        PlayerProfile profile = inputMeta.getPlayerProfile();
+        SkullMeta resultMeta = (SkullMeta) result.getItemMeta();
+        resultMeta.setPlayerProfile(profile);
+        result.setItemMeta(resultMeta);
+        ItemMeta meta = result.getItemMeta();
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(disguiseKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(sterileKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(reviveKey, PersistentDataType.BOOLEAN))) return null;
+        if (Boolean.TRUE.equals(inputMeta.getPersistentDataContainer().get(lifeKey, PersistentDataType.BOOLEAN))) return null;
+        meta.getPersistentDataContainer().set(lifeKey, PersistentDataType.BOOLEAN, true);
+        meta.lore(List.of(Component.text("Extra Life")));
         result.setItemMeta(meta);
         return result;
     }

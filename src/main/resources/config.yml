@@ -1,4 +1,22 @@
-removeHeadOnUse: true
-headUseCooldown: 20 #cooldown in seconds after expiry
-headUseDuration: 60 #duration in seconds
-disguiseDuration: 300
+enabled: true
+headUse:
+  enabled: true
+  cooldown: 20 #cooldown in seconds after expiry
+  duration: 60 #duration in seconds
+  removeHead: false #remove the head on use
+disguise:
+  enabled: true #Enable using disguise heads
+  craftingEnabled: true
+  duration: 300 #duration in seconds
+lifeSystem:
+  enabled: true
+  revives:
+    enabled: true
+    crafting: true
+  extraLives:
+    enabled: true
+    crafting: true
+  maxLives: 3
+commands:
+  decorate: true #Enable /decorate
+  head: true #Enable /head

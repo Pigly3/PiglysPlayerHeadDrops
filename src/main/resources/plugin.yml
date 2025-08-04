@@ -1,4 +1,4 @@
 name: PiglysPlayerHeadDrops
-version: '1.1.5'
+version: '1.2.0'
 main: dev.Pigly3.piglysPlayerHeadDrops.PiglysPlayerHeadDrops
 api-version: '1.21'

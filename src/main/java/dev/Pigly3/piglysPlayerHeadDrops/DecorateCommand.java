@@ -13,14 +13,17 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jspecify.annotations.NullMarked;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
 @NullMarked
 public class DecorateCommand implements BasicCommand {
     Plugin plugin;
+    APIManager api;
     public DecorateCommand(Plugin plugin){
         this.plugin = plugin;
+        this.api = new APIManager(plugin);
     }
     @Override
     public void execute(CommandSourceStack commandSourceStack, String[] args) {
@@ -37,6 +40,11 @@ public class DecorateCommand implements BasicCommand {
             meta.getPersistentDataContainer().set(key, PersistentDataType.BOOLEAN, true);
             meta.lore(List.of(Component.text("Decorative")));
             item.setItemMeta(meta);
+            try {
+                api.addLife(((SkullMeta) item).getPlayerProfile().getName());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             commandSourceStack.getExecutor().sendMessage("This command can only be run on a head.");
         }
