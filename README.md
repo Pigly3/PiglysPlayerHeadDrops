@@ -13,6 +13,6 @@ Disguise heads allow a player to disguise as another player for a period of time
 
 Death Bonds transfer half of the damage done to one player to another. This effect lasts until either player goes below 2 hearts (default) or 30 minutes (default) after it was activated. **(Unreleased, 1.3 content)**
 
-*There are major differences between versions, so make sure to check the changelog. It is best to use the latest subversion for each major version (e.g. 1.1)*
+*There are major differences between versions, so make sure to check the <a href="https://modrinth.com/plugin/piglys-player-head-drops/changelog">changelog</a>. It is best to use the latest subversion for each major version (e.g. 1.1)*
 
 **Version 1.3.0 is in development and will release soon.**
