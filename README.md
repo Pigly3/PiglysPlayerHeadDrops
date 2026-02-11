@@ -32,6 +32,6 @@ With the life system enabled, crafting extra lives can be enabled in the config,
 With the life system enabled, crafting revives can be enabled in the config, allowing you to revive a player if you have their head.
 
 ###### *Death Bond Recipe (1.3+)*
-![Items in crafting grid](https://cdn.modrinth.com/data/hvwKeVnz/images/d3d5823ae02567d85df9ed3264a1b31257b2216f.png)
+![Items in crafting grid](https://cdn.modrinth.com/data/hvwKeVnz/images/053a4fbbe3eb45c9d372cdcf109739d669bb2d8c.png)
 
 Death Bonds (a type of head) transfer half of the damage done to one player to another. This effect lasts until either player goes below 2 hearts (default) or 30 minutes (default) after it was activated.

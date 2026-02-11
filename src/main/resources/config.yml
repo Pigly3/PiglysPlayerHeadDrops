@@ -8,8 +8,8 @@ headUse:
     antiOneTap: true #caps damage dealt while invisible to 7 hearts
     ignoreDamage: false #disables dealing damage to a player whom you are invisible to via their head
 headProtection: #protection applied to head items (this is good to use with the life system)
-  headsDespawn: false
-  invulnerableHeads: true
+  headsDespawn: true
+  invulnerableHeads: false
 disguise:
   enabled: true #Enable using disguise heads
   craftingEnabled: true
