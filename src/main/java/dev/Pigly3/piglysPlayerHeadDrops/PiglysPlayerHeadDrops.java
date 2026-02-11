@@ -6,13 +6,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PiglysPlayerHeadDrops extends JavaPlugin {
-
+    public APIManager api;
     @Override
     public void onEnable() {
         if (!getConfig().getBoolean("enabled")) {
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        api = new APIManager(this);
         saveResource("cooldowns.yml", true);
         saveResource("lives.yml", false);
         saveResource("config.yml", false);
@@ -23,14 +24,15 @@ public final class PiglysPlayerHeadDrops extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new CommandListener(this), this);
         if (getConfig().getBoolean("disguise.craftingEnabled")) {
+            Material material = getConfig().getBoolean("disguise.cheaperCraft") ? Material.AMETHYST_SHARD : Material.ECHO_SHARD;
             NBTCraftingRecipe disguiseRecipe = new NBTCraftingRecipe("DisguiseHead", CustomCraftingRecipes::resolveDisguiseHead, this, new Material[]{
-                    Material.AMETHYST_SHARD, Material.AMETHYST_SHARD, Material.AMETHYST_SHARD,
-                    Material.AMETHYST_SHARD, Material.PLAYER_HEAD, Material.AMETHYST_SHARD,
-                    Material.AMETHYST_SHARD, Material.AMETHYST_SHARD, Material.AMETHYST_SHARD
+                    material, material, material,
+                    material, Material.PLAYER_HEAD, material,
+                    material, material, material
             });
             disguiseRecipe.register();
         }
-        if (getConfig().getBoolean("lifeSystem.revives.crafting")) {
+        if (getConfig().getBoolean("lifeSystem.revives.crafting") && getConfig().getBoolean("lifeSystem.enabled")) {
             NBTCraftingRecipe reviveRecipe = new NBTCraftingRecipe("ReviveHead", CustomCraftingRecipes::resolveReviveHead, this, new Material[]{
                     Material.NETHERITE_SCRAP, Material.NETHERITE_INGOT, Material.NETHERITE_SCRAP,
                     Material.DIAMOND, Material.PLAYER_HEAD, Material.DIAMOND,
@@ -38,13 +40,23 @@ public final class PiglysPlayerHeadDrops extends JavaPlugin {
             });
             reviveRecipe.register();
         }
-        if (getConfig().getBoolean("lifeSystem.extraLives.crafting")) {
+        if (getConfig().getBoolean("lifeSystem.extraLives.crafting") && getConfig().getBoolean("lifeSystem.enabled")) {
             NBTCraftingRecipe lifeRecipe = new NBTCraftingRecipe("ExtraLifeHead", CustomCraftingRecipes::resolveLifeHead, this, new Material[]{
                     Material.DIAMOND, Material.NETHERITE_INGOT, Material.DIAMOND,
                     Material.DIAMOND, Material.PLAYER_HEAD, Material.DIAMOND,
                     Material.DIAMOND, Material.DIAMOND, Material.DIAMOND
             });
             lifeRecipe.register();
+        }
+        if (getConfig().getBoolean("deathBond.crafting")){
+            NBTCraftingRecipe deathBondRecipe = new NBTCraftingRecipe("DeathBond", CustomCraftingRecipes::resolveDeathBond, this, new Material[]{
+                    Material.PLAYER_HEAD, Material.PLAYER_HEAD, Material.PLAYER_HEAD,
+                    Material.IRON_CHAIN, Material.CREAKING_HEART, Material.IRON_CHAIN,
+                    Material.PLAYER_HEAD, Material.PLAYER_HEAD, Material.PLAYER_HEAD
+            });
+        }
+        if (!getConfig().getBoolean("headProtection.headsDespawn") || getConfig().getBoolean("headProtection.invulnerableHeads")){
+            getServer().getPluginManager().registerEvents(new HeadInvulnerabilityListeners(this), this);
         }
         final DecorateCommand decorateCommand = new DecorateCommand(this);
         final HeadCommand headCommand = new HeadCommand(this);

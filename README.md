@@ -7,26 +7,12 @@ This head can be used by another player to make them invisible to the head's own
 
 Players can also run /decorate to make the heads purely decorative.
 
-Invisibility lasts for 1 minute or until the head's owner is hit by the player.
+Invisibility lasts for 1 minute (default) or until the head's owner is hit by the player. Heads have a 20-second cooldown by default.
 
-Heads have a 20-second cooldown.
+Disguise heads allow a player to disguise as another player for a period of time set in the config. Its crafting recipe can be adjusted to use either amethyst shards or echo shards. Messages to a player will be redirected to a player disguised as them. (1.1+)
 
-## Changes 1.2.0
-- Lives system
-- Expanded config options
-- Config restructuring
-- Easy disable system
-- Revives
-- Extra lives (crafted with heads)
-- Fixed a problem with the NBTCraftingRecipe API that would prevent registering multiple recipes
-- Added an API to allow for extensions of the plugins
+Death Bonds transfer half of the damage done to one player to another. This effect lasts until either player goes below 2 hearts (default) or 30 minutes (default) after it was activated. **(Unreleased, 1.3 content)**
 
-## Changes in 1.1.0
-- Config option for consuming the head on use
-- Config option for head use duration
-- Config option for head use cooldown
-- Disguise heads
-- Config option for disguise duration
-- NBT Crafting API (can be used in plugins with this as a dependency)
-- Useful for crafting recipes involving player heads
-- Owner storage changes (using PlayerProfile instead of Player)
+*There are major differences between versions, so make sure to check the changelog. It is best to use the latest subversion for each major version (e.g. 1.1)*
+
+**Version 1.3.0 is in development and will release soon.**

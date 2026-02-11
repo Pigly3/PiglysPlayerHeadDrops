@@ -3,13 +3,20 @@ headUse:
   enabled: true
   cooldown: 20 #cooldown in seconds after expiry
   duration: 60 #duration in seconds
-  removeHead: false #remove the head on use
+  removeHead: true #remove the head on use
+  victimProtection:
+    antiOneTap: true #caps damage dealt while invisible to 7 hearts
+    ignoreDamage: false #disables dealing damage to a player whom you are invisible to via their head
+headProtection: #protection applied to head items (this is good to use with the life system)
+  headsDespawn: false
+  invulnerableHeads: true
 disguise:
   enabled: true #Enable using disguise heads
   craftingEnabled: true
+  cheaperCraft: false
   duration: 300 #duration in seconds
 lifeSystem:
-  enabled: true
+  enabled: false
   revives:
     enabled: true
     crafting: true
@@ -20,3 +27,9 @@ lifeSystem:
 commands:
   decorate: true #Enable /decorate
   head: true #Enable /head
+deathBond:
+  allowUse: true
+  crafting: true
+  duration: 1800 #Seconds
+  minHealth: 4 #Death bond will deactivate when a player drops to that health
+  activateDistance: 10 #The maximum distance between the players for the death bond to activate
