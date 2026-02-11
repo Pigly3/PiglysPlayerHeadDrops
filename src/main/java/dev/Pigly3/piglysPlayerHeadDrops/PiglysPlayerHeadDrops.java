@@ -33,12 +33,21 @@ public final class PiglysPlayerHeadDrops extends JavaPlugin {
             disguiseRecipe.register();
         }
         if (getConfig().getBoolean("lifeSystem.revives.crafting") && getConfig().getBoolean("lifeSystem.enabled")) {
-            NBTCraftingRecipe reviveRecipe = new NBTCraftingRecipe("ReviveHead", CustomCraftingRecipes::resolveReviveHead, this, new Material[]{
-                    Material.NETHERITE_SCRAP, Material.NETHERITE_INGOT, Material.NETHERITE_SCRAP,
-                    Material.DIAMOND, Material.PLAYER_HEAD, Material.DIAMOND,
-                    Material.DIAMOND, Material.DIAMOND, Material.DIAMOND
-            });
-            reviveRecipe.register();
+            if (getConfig().getBoolean("lifeSystem.revives.lightCraft")){
+                NBTCraftingRecipe reviveRecipe = new NBTCraftingRecipe("ReviveHead", CustomCraftingRecipes::resolveReviveHead, this, new Material[]{
+                        Material.NETHERITE_SCRAP, Material.NETHERITE_INGOT, Material.NETHERITE_SCRAP,
+                        Material.DIAMOND, Material.PLAYER_HEAD, Material.DIAMOND,
+                        Material.DIAMOND, Material.DIAMOND, Material.DIAMOND
+                });
+                reviveRecipe.register();
+            } else {
+                NBTCraftingRecipe reviveRecipe = new NBTCraftingRecipe("ReviveHead", CustomCraftingRecipes::resolveReviveHead, this, new Material[]{
+                        Material.NETHERITE_INGOT, Material.NETHERITE_INGOT, Material.NETHERITE_INGOT,
+                        Material.NETHERITE_SCRAP, Material.PLAYER_HEAD, Material.NETHERITE_SCRAP,
+                        Material.DIAMOND, Material.DIAMOND, Material.DIAMOND
+                });
+                reviveRecipe.register();
+            }
         }
         if (getConfig().getBoolean("lifeSystem.extraLives.crafting") && getConfig().getBoolean("lifeSystem.enabled")) {
             NBTCraftingRecipe lifeRecipe = new NBTCraftingRecipe("ExtraLifeHead", CustomCraftingRecipes::resolveLifeHead, this, new Material[]{
