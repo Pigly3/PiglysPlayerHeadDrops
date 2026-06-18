@@ -20,7 +20,6 @@ lifeSystem:
   revives:
     enabled: true
     crafting: true
-    lightCraft: false
   extraLives:
     enabled: true
     crafting: true
