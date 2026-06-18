@@ -1,5 +1,6 @@
 package dev.Pigly3.piglysPlayerHeadDrops;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -29,6 +30,28 @@ public class MojangAPIAccess {
             }
             JsonObject json = JsonParser.parseString(response.toString()).getAsJsonObject();
             return json.get("name").getAsString();
+        }
+    }
+
+    public static String getSkin(UUID uuidd) throws IOException {
+        String uuidString = uuidd.toString().replace("-", "");
+        URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuidString + "?unsigned=false");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        if (conn.getResponseCode() != 200) {
+            return null;
+        }
+
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = in.readLine()) != null) {
+                response.append(line);
+            }
+            JsonObject json = JsonParser.parseString(response.toString()).getAsJsonObject();
+            JsonArray arr =  json.get("properties").getAsJsonArray();
+            return arr.get(0).getAsJsonObject().get("value").getAsString();
         }
     }
 }

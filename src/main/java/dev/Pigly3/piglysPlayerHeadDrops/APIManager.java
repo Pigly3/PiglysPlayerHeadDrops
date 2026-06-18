@@ -1,6 +1,7 @@
 package dev.Pigly3.piglysPlayerHeadDrops;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.File;
@@ -37,6 +38,10 @@ public class APIManager {
     public void revive(String playerName) throws IOException {
         if (lifeSystemDisabled()) return;
         setLives(playerName, plugin.getConfig().getInt("lifeSystem.maxLives"));
+    }
+
+    public static String getRealUserame(Player player) throws IOException {
+        return MojangAPIAccess.uuidToUsername(player.getUniqueId());
     }
     public boolean lifeSystemDisabled(){
         return !plugin.getConfig().getBoolean("lifeSystem.enabled");

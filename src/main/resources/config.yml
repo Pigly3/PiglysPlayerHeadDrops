@@ -1,4 +1,5 @@
 enabled: true
+version: 1.4.0
 headUse:
   enabled: true
   cooldown: 20 #cooldown in seconds after expiry
@@ -7,9 +8,10 @@ headUse:
 disguise:
   enabled: true #Enable using disguise heads
   craftingEnabled: true
+  cheaperCraft: false
   duration: 300 #duration in seconds
 lifeSystem:
-  enabled: true
+  enabled: false
   revives:
     enabled: true
     crafting: true

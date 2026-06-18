@@ -49,7 +49,7 @@ public class PlayerInteractListener implements Listener {
             if (headOwner == null){
                 return;
             }
-            if (headOwner.getName().equals(event.getPlayer().getName())){
+            if (headOwner.getName().equals(APIManager.getRealUserame(event.getPlayer()))){
                 return;
             }
             NamespacedKey key = new NamespacedKey(plugin, "is_disguise_head");
@@ -77,9 +77,9 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
             YamlConfiguration cooldowns = YamlConfiguration.loadConfiguration(file);
-            if (cooldowns.get("players." + event.getPlayer().getName()) != null){
-                if (Instant.parse((CharSequence) Objects.requireNonNull(cooldowns.get("players." + event.getPlayer().getName()))).isAfter(Instant.now())){
-                    event.getPlayer().sendActionBar(Component.text(String.format("§cCooldown: %ss", Math.round(Duration.between(Instant.now(), Instant.parse((CharSequence) Objects.requireNonNull(cooldowns.get("players." + event.getPlayer().getName())))).getSeconds()))));
+            if (cooldowns.get("players." + APIManager.getRealUserame(event.getPlayer())) != null){
+                if (Instant.parse((CharSequence) Objects.requireNonNull(cooldowns.get("players." + APIManager.getRealUserame(event.getPlayer())))).isAfter(Instant.now())){
+                    event.getPlayer().sendActionBar(Component.text(String.format("§cCooldown: %ss", Math.round(Duration.between(Instant.now(), Instant.parse((CharSequence) Objects.requireNonNull(cooldowns.get("players." + APIManager.getRealUserame(event.getPlayer()))))).getSeconds()))));
                     return;
                 }
                 owner.hidePlayer(plugin, event.getPlayer());
@@ -92,7 +92,9 @@ public class PlayerInteractListener implements Listener {
                     if (!owner.canSee(event.getPlayer())){
                         owner.showPlayer(plugin, event.getPlayer());
                         event.getPlayer().sendActionBar(Component.text(String.format("%s can now see you", headOwner.getName())));
-                        cooldowns.set("players." + event.getPlayer().getName(), Instant.now().plusSeconds(20).toString());
+                        try {
+                            cooldowns.set("players." + APIManager.getRealUserame(event.getPlayer()), Instant.now().plusSeconds(20).toString());
+                        } catch (IOException e) {plugin.getLogger().severe("Couldn't get a real username properly.");}
                         try {
                             cooldowns.save(file);
                         } catch (IOException e) {
@@ -108,7 +110,9 @@ public class PlayerInteractListener implements Listener {
                     if (!owner.canSee(event.getPlayer())){
                         owner.showPlayer(plugin, event.getPlayer());
                         event.getPlayer().sendActionBar(Component.text(String.format("%s can now see you", headOwner.getName())));
-                        cooldowns.set("players." + event.getPlayer().getName(), Instant.now().plusSeconds(config.getInt("headUse.cooldown")).toString());
+                        try {
+                            cooldowns.set("players." + APIManager.getRealUserame(event.getPlayer()), Instant.now().plusSeconds(config.getInt("headUse.cooldown")).toString());
+                        } catch (IOException e) {plugin.getLogger().severe("Couldn't get a real username properly.");}
                         try {
                             cooldowns.save(file);
                         } catch (IOException e) {
@@ -119,11 +123,10 @@ public class PlayerInteractListener implements Listener {
             }
         }
     }
-    public void disguiseHeadInteract(PlayerInteractEvent event, PlayerProfile owner){
+    public void disguiseHeadInteract(PlayerInteractEvent event, PlayerProfile owner) throws IOException {
         Player player = event.getPlayer();
         PlayerProfile profile = player.getPlayerProfile();
-        PlayerProfile returnProfile = (PlayerProfile) profile.clone();
-        String playerName = player.getName();
+        String playerName = APIManager.getRealUserame(player);
         for (ProfileProperty property : owner.getProperties()) {
             if ("textures".equals(property.getName())) {
                 profile.setProperty(property);
@@ -141,16 +144,19 @@ public class PlayerInteractListener implements Listener {
             p.showPlayer(plugin, player);
         });
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
+
             if (player.isOnline() && !Objects.equals(player.getPlayerProfile().getName(), playerName)){
-                player.setPlayerProfile(Bukkit.createProfile(playerUUID, playerName));
+                PlayerProfile realProfile = Bukkit.createProfileExact(player.getUniqueId(), playerName);
+                try {
+                    realProfile.setProperty(new ProfileProperty("textures", Objects.requireNonNull(MojangAPIAccess.getSkin(player.getUniqueId()))));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                player.setPlayerProfile(realProfile);
                 player.displayName(Component.text(playerName));
                 player.playerListName(Component.text(playerName));
                 profile.setName(playerName);
-                for (ProfileProperty property : returnProfile.getProperties()) {
-                    if ("textures".equals(property.getName())) {
-                        profile.setProperty(property);
-                    }
-                }
+
                 Bukkit.getOnlinePlayers().forEach(p -> {
                     p.hidePlayer(plugin, player);
                     p.showPlayer(plugin, player);

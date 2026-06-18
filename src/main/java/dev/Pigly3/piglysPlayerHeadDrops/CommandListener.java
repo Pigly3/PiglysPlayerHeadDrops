@@ -24,7 +24,7 @@ public class CommandListener implements Listener {
             String[] commandParts = event.getMessage().split(" ");
             UUID recipientUUID = Bukkit.getOfflinePlayer(commandParts[1]).getUniqueId();
             for (Player currPlayer : Bukkit.getOnlinePlayers()){
-                if (currPlayer.getName().equals(commandParts[1])){
+                if (APIManager.getRealUserame(currPlayer).equals(commandParts[1])){
                     if (currPlayer.getUniqueId() != recipientUUID){
                         commandParts[1] = MojangAPIAccess.uuidToUsername(currPlayer.getUniqueId());
                         event.setMessage(String.join(" ", commandParts));

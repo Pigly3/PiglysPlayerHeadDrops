@@ -24,12 +24,13 @@ public class EntityDamagedListener implements Listener {
         config = YamlConfiguration.loadConfiguration(configFile);
     }
     @EventHandler
-    public void onEntityDamagedByEntity(EntityDamageByEntityEvent event){
-        if ((event.getDamager() instanceof Player) && (event.getEntity() instanceof Player)){
+    public void onEntityDamagedByEntity(EntityDamageByEntityEvent event) throws IOException {
+        if ((event.getDamager() instanceof Player damager) && (event.getEntity() instanceof Player)){
+            String damagerName = APIManager.getRealUserame(damager);
             if (!((Player) event.getEntity()).canSee(event.getDamager())){
                 ((Player) event.getEntity()).showPlayer(plugin, (Player) event.getDamager());
                 YamlConfiguration cooldowns = YamlConfiguration.loadConfiguration(file);
-                cooldowns.set("players." + event.getDamager().getName(), Instant.now().plusSeconds(config.getInt("headUseCooldown")).toString());
+                cooldowns.set("players." + damagerName, Instant.now().plusSeconds(config.getInt("headUseCooldown")).toString());
                 try {
                     cooldowns.save(file);
                 } catch (IOException e) {
