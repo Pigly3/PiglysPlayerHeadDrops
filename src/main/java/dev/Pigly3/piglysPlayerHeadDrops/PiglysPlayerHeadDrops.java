@@ -63,7 +63,6 @@ public final class PiglysPlayerHeadDrops extends JavaPlugin {
                     Material.IRON_CHAIN, Material.CREAKING_HEART, Material.IRON_CHAIN,
                     Material.PLAYER_HEAD, Material.PLAYER_HEAD, Material.PLAYER_HEAD
             });
-            deathBondRecipe.register();
         }
         if (!getConfig().getBoolean("headProtection.headsDespawn") || getConfig().getBoolean("headProtection.invulnerableHeads")){
             getServer().getPluginManager().registerEvents(new HeadInvulnerabilityListeners(this), this);

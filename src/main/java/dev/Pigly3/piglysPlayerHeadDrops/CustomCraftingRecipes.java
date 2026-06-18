@@ -78,7 +78,9 @@ public class CustomCraftingRecipes {
             if (!Objects.equals(plugin.api.getOwnerName(items[6]), plugin.api.getOwnerName(items[7])) || !Objects.equals(plugin.api.getOwnerName(items[7]), plugin.api.getOwnerName(items[8])))
                 return null;
 
-            PlayerProfile p0 = ((SkullMeta) items[0].getItemMeta()).getPlayerProfile();
+            OfflinePlayer player0 = APIManager.getOwner(items[0]);
+
+            PlayerProfile p0 = player0.getPlayerProfile();
 
             ItemStack returnItem = ItemStack.of(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) returnItem.getItemMeta();
