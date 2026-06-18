@@ -19,11 +19,11 @@ import java.util.Objects;
 
 @NullMarked
 public class DecorateCommand implements BasicCommand {
-    PiglysPlayerHeadDrops plugin;
+    Plugin plugin;
     APIManager api;
-    public DecorateCommand(PiglysPlayerHeadDrops plugin){
+    public DecorateCommand(Plugin plugin){
         this.plugin = plugin;
-        this.api = plugin.api;
+        this.api = new APIManager(plugin);
     }
     @Override
     public void execute(CommandSourceStack commandSourceStack, String[] args) {
