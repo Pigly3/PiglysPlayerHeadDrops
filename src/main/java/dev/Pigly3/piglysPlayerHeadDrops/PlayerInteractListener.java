@@ -138,7 +138,9 @@ public class PlayerInteractListener implements Listener {
         player.displayName(Component.text(owner.getName()));
         player.playerListName(Component.text(owner.getName()));
         ItemStack item = event.getItem();
-        item.setAmount(item.getAmount() - 1);
+        if (config.getBoolean("disguise.removeHead")){
+            item.setAmount(item.getAmount() - 1);
+        }
         Bukkit.getOnlinePlayers().forEach(p -> {
             p.hidePlayer(plugin, player);
             p.showPlayer(plugin, player);

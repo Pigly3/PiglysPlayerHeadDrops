@@ -9,11 +9,24 @@ Players can also run /decorate to make the heads purely decorative.
 
 Invisibility lasts for 1 minute or until the head's owner is hit by the player.
 
-Heads have a 20-second cooldown.
+Heads have a 20-second cooldown by default, but it can be modified in the config.
+
+Whether heads are consumed on use can be set for normal and disugise heads.
 
 The current version, 1.4.0, reverts the death bond addition and resets config when updating the plugin.
 **1.4.0 also fixes some major exploits involving disguise heads.**
 
+## Target Protection (1.4.1+)
+This is disabled by default, but can be enabled in the config. The following types can be used:
+- Cap dealt or final/effective damage on person a player is invisible to
+- Prevent a player from damaging a person a player is invisible to
+
+## Changes 1.4.0
+- Reverted 1.3.0
+- Players will lose their disguise on death
+- Config updates automatically when updating the plugin
+- (Bug Fix) While disguised as another player, a player can no longer use death or /head to obtain the head of the player they are disguised as
+- (Bug Fix) Skin is properly reset when their disguise expires
 
 ## Changes 1.2.0
 - Lives system
