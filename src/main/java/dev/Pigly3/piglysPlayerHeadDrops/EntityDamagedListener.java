@@ -9,24 +9,19 @@ import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.util.HashMap;
 
 public class EntityDamagedListener implements Listener {
     Plugin plugin;
-    File file;
     YamlConfiguration config;
     public EntityDamagedListener(Plugin plugin){
         this.plugin = plugin;
-        this.file = new File(plugin.getDataFolder(), "cooldowns.yml");
         File configFile = new File(plugin.getDataFolder(), "config.yml");
         config = YamlConfiguration.loadConfiguration(configFile);
     }
     @EventHandler
     public void onEntityDamagedByEntity(EntityDamageByEntityEvent event) throws IOException {
         if ((event.getDamager() instanceof Player damager) && (event.getEntity() instanceof Player victim)){
-            String damagerName = APIManager.getRealUserame(damager);
+            String damagerName = APIManager.getRealUsername(damager);
             if (!((Player) event.getEntity()).canSee(event.getDamager())){
                 if (plugin.getConfig().getBoolean("headUse.targetProtection.disableDamage")){
                     event.setCancelled(true);
@@ -43,13 +38,7 @@ public class EntityDamagedListener implements Listener {
                     }
                 }
                 ((Player) event.getEntity()).showPlayer(plugin, (Player) event.getDamager());
-                YamlConfiguration cooldowns = YamlConfiguration.loadConfiguration(file);
-                cooldowns.set("players." + damagerName, Instant.now().plusSeconds(config.getInt("headUseCooldown")).toString());
-                try {
-                    cooldowns.save(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                CooldownManager.setNormalHeadUseCooldownTime((Player) event.getDamager(), config.getInt("headUseCooldown"));
             }
         }
     }

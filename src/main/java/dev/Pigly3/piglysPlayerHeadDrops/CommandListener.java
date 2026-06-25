@@ -6,11 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerCommandSendEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
-import java.util.Objects;
 import java.util.UUID;
 
 public class CommandListener implements Listener {
@@ -24,7 +22,7 @@ public class CommandListener implements Listener {
             String[] commandParts = event.getMessage().split(" ");
             UUID recipientUUID = Bukkit.getOfflinePlayer(commandParts[1]).getUniqueId();
             for (Player currPlayer : Bukkit.getOnlinePlayers()){
-                if (APIManager.getRealUserame(currPlayer).equals(commandParts[1])){
+                if (APIManager.getRealUsername(currPlayer).equals(commandParts[1])){
                     if (currPlayer.getUniqueId() != recipientUUID){
                         commandParts[1] = MojangAPIAccess.uuidToUsername(currPlayer.getUniqueId());
                         event.setMessage(String.join(" ", commandParts));

@@ -21,6 +21,18 @@ This is disabled by default, but can be enabled in the config. The following typ
 - Cap dealt or final/effective damage on person a player is invisible to
 - Prevent a player from damaging a person a player is invisible to
 
+## Changes 1.5.0
+- Expanded capabilities for extending functionality
+  - Other plugins can access the APIManager
+  - Head types are controlled through the API manager
+  - Extensions can add head types, handled through PlayerInteractListener
+- Cooldowns are now handled in memory and not in a config file
+- Disguises are cleared when disconnecting
+- Added cooldown for disguise heads (set in config)
+- Operators can use `/head` to get heads from other players
+- (Bug Fix) Config-set cooldown is properly applied in all cases
+- (Bug Fix) Normal heads will not be consumed if `headUse.consumeHead` is set to false
+
 ## Changes 1.4.0
 - Reverted 1.3.0
 - Players will lose their disguise on death

@@ -1,7 +1,6 @@
 package dev.Pigly3.piglysPlayerHeadDrops;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Keyed;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.EventHandler;
@@ -16,11 +15,13 @@ import java.util.function.BiFunction;
 
 public class NBTCraftingRecipe implements Listener {
     //only works in crafting table
-    BiFunction<Plugin, ItemStack[], ItemStack> resolve;
-    Plugin plugin;
-    Material[] pattern;
-    String pluginSpecificID;
-    public NBTCraftingRecipe (String pluginSpecificID, BiFunction<Plugin, ItemStack[], ItemStack> resolve, Plugin plugin, Material[] pattern){
+    private final BiFunction<Plugin, ItemStack[], ItemStack> resolve;
+    private final Plugin plugin;
+    private final Material[] pattern;
+    private final String pluginSpecificID;
+    private boolean registered = false;
+
+    protected NBTCraftingRecipe (String pluginSpecificID, BiFunction<Plugin, ItemStack[], ItemStack> resolve, Plugin plugin, Material[] pattern){
         this.resolve = resolve;
         this.plugin = plugin;
         this.pattern = pattern;
@@ -40,6 +41,8 @@ public class NBTCraftingRecipe implements Listener {
 
     }
     public void register(){
+        if (registered) return;
+        registered = true;
         NamespacedKey key = new NamespacedKey(plugin, pluginSpecificID);
         ItemStack item = ItemStack.of(Material.DIRT);
         ShapedRecipe recipe = new ShapedRecipe(key, item);
@@ -57,5 +60,25 @@ public class NBTCraftingRecipe implements Listener {
 
         Bukkit.getServer().addRecipe(recipe);
         Bukkit.getServer().getPluginManager().registerEvents(this ,plugin);
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
+    public String getPluginSpecificID() {
+        return pluginSpecificID;
+    }
+
+    public Material[] getPattern() {
+        return pattern;
+    }
+
+    public BiFunction<Plugin, ItemStack[], ItemStack> getResolve() {
+        return resolve;
+    }
+
+    public boolean isRegistered() {
+        return registered;
     }
 }
